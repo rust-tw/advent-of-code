@@ -2,7 +2,7 @@
 
 ## Original Question
 
-<https://adventofcode.com/2021/day/1>
+<https://adventofcode.com/2022/day/1>
 
 ## 解析資料
 
