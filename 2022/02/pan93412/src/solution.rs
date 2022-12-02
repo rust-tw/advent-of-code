@@ -1,6 +1,6 @@
 use crate::{
     response::{list::ResponseList, Point},
-    strategy::{list::ResponseStrategyMap, ResponseStrategyExt},
+    strategy::list::ResponseStrategyMap,
     tokenizer::{self, TheirOurTable},
 };
 
@@ -33,16 +33,7 @@ impl Solution {
     pub fn find_best_solution(&self) -> anyhow::Result<ResponseList> {
         let response_strategy_map = ResponseStrategyMap::try_from(&self.table)?;
 
-        Ok(ResponseList(
-            response_strategy_map
-                .iter()
-                .map(|(their, our_strategy)| {
-                    let our_response = their.find_best_response(*our_strategy);
-
-                    (*their, our_response)
-                })
-                .collect(),
-        ))
+        Ok(response_strategy_map.find_best_solution())
     }
 }
 

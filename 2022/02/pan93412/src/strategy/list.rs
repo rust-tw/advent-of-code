@@ -1,12 +1,26 @@
 use std::ops::Deref;
 
-use crate::tokenizer::TheirOurTable;
+use crate::{response::list::ResponseList, tokenizer::TheirOurTable};
 
-use super::{Response, Strategy};
+use super::{Response, ResponseStrategyExt, Strategy};
 
 /// 敵方之 [Response]，及我方之 [Strategy] 之對映
 pub struct ResponseStrategyMap(pub Vec<(Response, Strategy)>);
 
+impl ResponseStrategyMap {
+    /// 將輸入依照第二題題意尋找最優解答。
+    pub fn find_best_solution(&self) -> ResponseList {
+        ResponseList(
+            self.iter()
+                .map(|(their, our_strategy)| {
+                    let our_response = their.find_best_response(*our_strategy);
+
+                    (*their, our_response)
+                })
+                .collect(),
+        )
+    }
+}
 impl TryFrom<&TheirOurTable> for ResponseStrategyMap {
     type Error = anyhow::Error;
 
