@@ -35,7 +35,7 @@ fn main() {
     println!("{}", part2(&processed_data, &map));
 }
 
-fn part1(data: &Vec<(char, char)>, map: &HashMap<char, HashMap<char, (i32, i32)>>) -> i32 {
+fn part1(data: &[(char, char)], map: &HashMap<char, HashMap<char, (i32, i32)>>) -> i32 {
     data.iter()
         .map(|(l, r)| {
             map.get(l).unwrap().get(r).unwrap().0
@@ -43,7 +43,7 @@ fn part1(data: &Vec<(char, char)>, map: &HashMap<char, HashMap<char, (i32, i32)>
         .sum()
 }
 
-fn part2(data: &Vec<(char, char)>, map: &HashMap<char, HashMap<char, (i32, i32)>>) -> i32 {
+fn part2(data: &[(char, char)], map: &HashMap<char, HashMap<char, (i32, i32)>>) -> i32 {
     data.iter()
         .map(|(l, r)| {
             map.get(l).unwrap().get(r).unwrap().1
@@ -51,7 +51,7 @@ fn part2(data: &Vec<(char, char)>, map: &HashMap<char, HashMap<char, (i32, i32)>
         .sum()
 }
 
-fn process_data(data: &'static str) -> Vec<(char, char)> {
+fn process_data(data: &'static str) -> &[(char, char)] {
     let mut result = Vec::new();
 
     for line in data.replace("\r\n", "\n").split('\n') {
@@ -62,5 +62,5 @@ fn process_data(data: &'static str) -> Vec<(char, char)> {
         result.push((chars[0], chars[1]));
     }
 
-    return result;
+    &result[..]
 }
