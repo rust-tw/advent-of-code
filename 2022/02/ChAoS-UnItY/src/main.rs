@@ -51,7 +51,7 @@ fn part2(data: &[(char, char)], map: &HashMap<char, HashMap<char, (i32, i32)>>) 
         .sum()
 }
 
-fn process_data(data: &'static str) -> &[(char, char)] {
+fn process_data(data: &'static str) -> Vec<(char, char)> {
     let mut result = Vec::new();
 
     for line in data.replace("\r\n", "\n").split('\n') {
@@ -62,5 +62,5 @@ fn process_data(data: &'static str) -> &[(char, char)] {
         result.push((chars[0], chars[1]));
     }
 
-    &result[..]
+    result
 }
