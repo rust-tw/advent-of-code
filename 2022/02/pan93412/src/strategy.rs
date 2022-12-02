@@ -41,7 +41,15 @@ pub trait ResponseStrategyExt: Clone {
     fn win_game(&self) -> Self;
 
     /// 根據策略 [Strategy] 尋找最優回擊。
-    fn find_best_response(&self, strategy: Strategy) -> Self;
+    fn find_best_response(&self, strategy: Strategy) -> Self {
+        use Strategy::*;
+
+        match strategy {
+            DoLose => self.lose_game(),
+            DoDraw => self.draw_game(),
+            DoWin => self.win_game(),
+        }
+    }
 }
 
 impl ResponseStrategyExt for Response {
@@ -62,16 +70,6 @@ impl ResponseStrategyExt for Response {
             Rock => Paper,
             Paper => Scissors,
             Scissors => Rock,
-        }
-    }
-
-    fn find_best_response(&self, strategy: Strategy) -> Self {
-        use Strategy::*;
-
-        match strategy {
-            DoLose => self.lose_game(),
-            DoDraw => self.draw_game(),
-            DoWin => self.win_game(),
         }
     }
 }
