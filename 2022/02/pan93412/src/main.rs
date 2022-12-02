@@ -1,4 +1,4 @@
-use aoc_q2::solution::Solution;
+use aoc_d2::solution::Solution;
 
 fn main() {
     let input = include_str!("../inputs.txt");
@@ -7,11 +7,11 @@ fn main() {
         Solution::new_from_str(input).expect("Failed to parse input to solution structure");
 
     println!(
-        "Answer #1: {}",
+        "Q1 Answer: {}",
         solution.point().expect("Failed to construct ResponseList")
     );
     println!(
-        "Answer #2: {}",
+        "Q2 Answer: {}",
         solution
             .find_best_solution()
             .expect("Failed to construct ResponseStrategyMap")
