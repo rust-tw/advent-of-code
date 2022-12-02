@@ -37,6 +37,8 @@ C Z
 
 考慮到一列的長度是等長的 (`A|B|C X|Y|Z`)，所以我們直接跑 `chars()` 然後用 `.next()` 將每個字元取出即可。也可以使用 `as_bytes()` 獲得更高速的效能，但考慮到整個程式階段只會做這麼一次 deserialization，所以就沒有這個必要。
 
+完整程式碼見 [`src/tokenizer.rs`](src/tokenizer.rs)。
+
 ### Response: 讓 A、B、C 變成一個人類也讀得懂的策略
 
 我們當然可以直接判斷 $A, B, C$ vs $X, Y, Z$，但這樣有幾個問題：
@@ -91,11 +93,18 @@ pub enum Strategy {
 
 因此我寫了兩個 Lists 將輸入的原始資料特化，並在其中寫上 `point()` 和 `find_best_solution()` 的封裝。
 
+詳細資訊請見以下兩個檔案：
+
+- [`src/response/list.rs`](./src/response/list.rs)
+- [`src/strategy/list.rs`](./src/strategy/list.rs)
+
 ### Solution: 封裝輸入的內容
 
 這裡基本上只是呼叫資料結構提供的方法而已，可以想像成 MVC 架構中的 View（或者說 Service-Controller 架構中的 Controller）。但裡面有個小巧思：裡面存放的資料結構是 `Vec<(char, char)>` 而不是上述任何一個特化過的結構。
 
 為何要這麼做？因為我方 (our) 的 $X, Y, Z$ 有兩種意思：「出法」和「策略」。如果把它轉換成上述任何一個結構，必定會弱化其中一方的意思。因此就乾脆維持原樣，讓 `Solution` 這個結構只存放原始的 deserialized 結果。
+
+詳細程式碼見 [`src/solution.rs`](./src/solution.rs)。
 
 ## 授權條款
 
