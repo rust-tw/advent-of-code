@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 macro_rules! hashmap {
     ($( $key: expr => $val: expr ),*) => {{
-         let mut map = ::std::collections::HashMap::new();
+         let mut map = HashMap::new();
          $( map.insert($key, $val); )*
          map
     }}
