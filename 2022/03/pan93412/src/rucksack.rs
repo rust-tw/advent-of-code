@@ -19,8 +19,10 @@ impl<'a> Rucksack<'a> {
     /// Separate this rucksack to two compartments.
     pub fn to_compartment_pair(&self) -> CompartmentPair<'a> {
         let compartment_split_point = self.0.len().div_floor(2);
-        let left_compartment = Compartment(&self.0[..compartment_split_point]);
-        let right_compartment = Compartment(&self.0[compartment_split_point..]);
+        let (left, right) = self.0.split_at(compartment_split_point);
+
+        let left_compartment = Compartment(left);
+        let right_compartment = Compartment(right);
 
         CompartmentPair((left_compartment, right_compartment))
     }
