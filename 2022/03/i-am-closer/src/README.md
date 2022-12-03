@@ -1,0 +1,2 @@
+1. 直接使用 `std::collections::HashSet<T>::intersection()` 來做最快。
+2. lib.rs:23: `intersection()` 的結果會是 `HashSet<&T>` 而不是 `HashSet<T>`，所以不能直接接下一個 `intersection()`。解決的方法是要用 `cloned()`，把 `HashSet<&T>` 再轉換成 `HashSet<T>`。相關的討論可以參考[這裡](https://github.com/rust-lang/rfcs/issues/2023)。
