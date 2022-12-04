@@ -51,19 +51,19 @@ Language                 Files     Lines   Blanks  Comments     Code Complexity
 JSON                       225       225        0         0      225          0
 D                          196      1888      474         0     1414          0
 Rust                        11       565       97        30      438         23
-Plain Text                   4      1016        0         0     1016          0
 TOML                         3        45       11         0       34          0
 LLVM IR                      2        16        4         2       10          0
+Plain Text                   2        10        0         0       10          0
 License                      1       661      117         0      544          0
-Markdown                     1        71       14         0       57          0
+Markdown                     1        72       14         0       58          0
 ───────────────────────────────────────────────────────────────────────────────
-Total                      443      4487      717        32     3738         23
+Total                      441      3482      717        32     2733         23
 ───────────────────────────────────────────────────────────────────────────────
-Estimated Cost to Develop (organic) $107,861
-Estimated Schedule Effort (organic) 5.90 months
-Estimated People Required (organic) 1.62
+Estimated Cost to Develop (organic) $77,636
+Estimated Schedule Effort (organic) 5.21 months
+Estimated People Required (organic) 1.32
 ───────────────────────────────────────────────────────────────────────────────
-Processed 509145 bytes, 0.509 megabytes (SI)
+Processed 497934 bytes, 0.498 megabytes (SI)
 ───────────────────────────────────────────────────────────────────────────────
 ```
 
