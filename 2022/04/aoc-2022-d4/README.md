@@ -36,6 +36,30 @@ test tests::bench_small_input_subset      ... bench:          42 ns/iter (+/- 0)
   - `testdata`: A bunch of raw testdata.
   - `test_actual_case`: Integration Test.
 
+## SCC
+
+```plain
+───────────────────────────────────────────────────────────────────────────────
+Language                 Files     Lines   Blanks  Comments     Code Complexity
+───────────────────────────────────────────────────────────────────────────────
+JSON                       221       221        0         0      221          0
+D                          192      1864      466         0     1398          0
+Rust                        11       526       92        17      417         22
+Plain Text                   4      1016        0         0     1016          0
+TOML                         3        45       11         0       34          0
+LLVM IR                      2        16        4         2       10          0
+Markdown                     1        66       11         0       55          0
+───────────────────────────────────────────────────────────────────────────────
+Total                      434      3754      584        19     3151         22
+───────────────────────────────────────────────────────────────────────────────
+Estimated Cost to Develop (organic) $90,150
+Estimated Schedule Effort (organic) 5.51 months
+Estimated People Required (organic) 1.45
+───────────────────────────────────────────────────────────────────────────────
+Processed 468649 bytes, 0.469 megabytes (SI)
+───────────────────────────────────────────────────────────────────────────────
+```
+
 ## License
 
 `AGPL-3.0-only`
