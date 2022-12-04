@@ -1,0 +1,24 @@
+[target.aarch64-apple-darwin]
+rustflags = ["-C", "target_cpu=apple-m1"]
+
+[target.aarch64-pc-windows-msvc]
+rustflags = ["-C", "target_cpu=native"]
+
+[target.aarch64-unknown-linux-gnu]
+rustflags = ["-C", "target_cpu=native"]
+
+[target.aarch64-unknown-linux-musl]
+rustflags = ["-C", "target_cpu=native"]
+
+[target.x86_64-apple-darwin]
+rustflags = ["-C", "target_cpu=native"]
+
+[target.x86_64-pc-windows-gnu]
+rustflags = ["-C", "target_cpu=native"]
+
+[target.x86_64-unknown-linux-gnu]
+rustflags = ["-C", "target_cpu=native"]
+
+[target.x86_64-unknown-linux-musl]
+rustflags = ["-C", "target_cpu=native"]
+
