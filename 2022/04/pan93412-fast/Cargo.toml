@@ -1,0 +1,19 @@
+[package]
+name = "aoc-2022-d4"
+authors = ["pan93412"]
+version = "0.1.0"
+edition = "2021"
+license = "AGPL-3.0-only"
+
+[profile.release]
+lto = true
+opt-level = 3
+codegen-units = 1
+
+[dependencies]
+anyhow = "1.0.66"
+delegate-attr = "0.2.9"
+hashbrown = { version = "0.13.1", features = ["nightly"] }
+
+[dev-dependencies]
+paste = "1.0.9"
