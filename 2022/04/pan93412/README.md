@@ -1,6 +1,6 @@
 # Pan's solution of AoC 2022 Day 4
 
-The performance-oriented and well-engineered solution.
+The well-engineered and extensible solution.
 
 ## Run
 
