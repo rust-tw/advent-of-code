@@ -71,7 +71,7 @@ impl Section {
             // THEIR  |---------|
             (our, their) if our.0 > their.0 => their.1 >= our.0,
             // our.0 == their.0, so they must be overlapped.
-            _ => true
+            _ => true,
         }
     }
 
