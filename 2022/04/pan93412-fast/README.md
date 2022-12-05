@@ -1,6 +1,12 @@
-# Pan's solution of AoC 2022 Day 4
+# **Optimized version of i-am-closer's solution** with pan's architecture
 
-The well-engineered and extensible solution.
+The performance-oriented and well-engineered solution.
+
+Thanks to [`i-am-closer`'s solution](https://github.com/rust-tw/advent-of-code/tree/main/2022/04/i-am-closer) a lot! His solution improved the performance of my architecture extremely – $17349ns$ → $0ns$!
+
+I also added some inline and graph explanation to his solution :) Besides, our optimization hacks improve the algorithm's speed by $45.54\\\%$:
+
+![Our optimized solution gains 45.54% of speed improvement.](docs/optimized-sol.webp)
 
 ## Run
 
@@ -11,14 +17,14 @@ cargo run --release your_filename.txt
 ## Bench Result
 
 ```plain
-test tests::bench_big_input_bufread       ... bench:     676,825 ns/iter (+/- 18,606)
-test tests::bench_big_input_overlap       ... bench:      17,349 ns/iter (+/- 1,398)
-test tests::bench_big_input_read_string   ... bench:     632,610 ns/iter (+/- 8,138)
-test tests::bench_big_input_subset        ... bench:      65,178 ns/iter (+/- 3,553)
-test tests::bench_small_input_bufread     ... bench:       1,589 ns/iter (+/- 68)
-test tests::bench_small_input_overlap     ... bench:          38 ns/iter (+/- 1)
-test tests::bench_small_input_read_string ... bench:       1,375 ns/iter (+/- 37)
-test tests::bench_small_input_subset      ... bench:          42 ns/iter (+/- 0)
+test tests::bench_big_input_bufread       ... bench:      85,823 ns/iter (+/- 2,357)
+test tests::bench_big_input_overlap       ... bench:           0 ns/iter (+/- 0)
+test tests::bench_big_input_read_string   ... bench:      63,241 ns/iter (+/- 1,331)
+test tests::bench_big_input_subset        ... bench:           0 ns/iter (+/- 0)
+test tests::bench_small_input_bufread     ... bench:         606 ns/iter (+/- 77)
+test tests::bench_small_input_overlap     ... bench:           0 ns/iter (+/- 0)
+test tests::bench_small_input_read_string ... bench:         388 ns/iter (+/- 24)
+test tests::bench_small_input_subset      ... bench:           0 ns/iter (+/- 0)
 ```
 
 ## File Hierarchy
@@ -42,21 +48,22 @@ test tests::bench_small_input_subset      ... bench:          42 ns/iter (+/- 0)
 ───────────────────────────────────────────────────────────────────────────────
 Language                 Files     Lines   Blanks  Comments     Code Complexity
 ───────────────────────────────────────────────────────────────────────────────
-JSON                       221       221        0         0      221          0
-D                          192      1864      466         0     1398          0
-Rust                        11       526       92        17      417         22
-Plain Text                   4      1016        0         0     1016          0
+JSON                       225       225        0         0      225          0
+D                          196      1888      474         0     1414          0
+Rust                        11       565       97        30      438         23
 TOML                         3        45       11         0       34          0
 LLVM IR                      2        16        4         2       10          0
-Markdown                     1        66       11         0       55          0
+Plain Text                   2        10        0         0       10          0
+License                      1       661      117         0      544          0
+Markdown                     1        72       14         0       58          0
 ───────────────────────────────────────────────────────────────────────────────
-Total                      434      3754      584        19     3151         22
+Total                      441      3482      717        32     2733         23
 ───────────────────────────────────────────────────────────────────────────────
-Estimated Cost to Develop (organic) $90,150
-Estimated Schedule Effort (organic) 5.51 months
-Estimated People Required (organic) 1.45
+Estimated Cost to Develop (organic) $77,636
+Estimated Schedule Effort (organic) 5.21 months
+Estimated People Required (organic) 1.32
 ───────────────────────────────────────────────────────────────────────────────
-Processed 468649 bytes, 0.469 megabytes (SI)
+Processed 497934 bytes, 0.498 megabytes (SI)
 ───────────────────────────────────────────────────────────────────────────────
 ```
 
