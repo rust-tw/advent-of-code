@@ -57,7 +57,7 @@ impl Section {
     #[inline]
     pub fn is_subset(&self, other: &Self) -> bool {
         // SELF         |--------------|
-        // THEIR        |------|-|-----|
+        // OTHER        |------|-|-----|
         self.lower() <= other.lower() && self.upper() >= other.upper()
     }
 
