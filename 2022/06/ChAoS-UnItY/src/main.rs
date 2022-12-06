@@ -8,25 +8,23 @@ fn main() {
 }
 
 fn part1(str: &'static str) -> usize {
-    for count in 4 .. str.len() {
-        if !is_duplicate(&str[count - 4 .. count]) {
-            return count;
-        }
-    }
-
-    return 0
+    str.as_bytes()
+        .windows(4)
+        .enumerate()
+        .find(|(_, b)| is_duplicate(*b))
+        .map(|(i, _)| i + 4)
+        .unwrap()
 }
 
 fn part2(str: &'static str) -> usize {
-    for count in 14 .. str.len() {
-        if !is_duplicate(&str[count - 14 .. count]) {
-            return count;
-        }
-    }
-
-    return 0
+    str.as_bytes()
+        .windows(14)
+        .enumerate()
+        .find(|(_, b)| is_duplicate(*b))
+        .map(|(i, _)| i + 14)
+        .unwrap()
 }
 
-fn is_duplicate(str: &str) -> bool {
-    str.as_bytes().iter().collect::<HashSet<_>>().len() != str.as_bytes().len()
+fn is_duplicate(bytes: &[u8]) -> bool {
+    bytes.iter().collect::<HashSet<_>>().len() != bytes.len()
 }
