@@ -15,9 +15,11 @@ fn main() {
                 .try_into()
                 .unwrap()
         })
-        .collect::<Vec<[u8; LEN]>>();
+        .collect::<Vec<[u8; LEN]>>()
+        .try_into()
+        .unwrap();
 
-    let (part1, part2) = scan(grid.as_slice());
+    let (part1, part2) = scan(grid);
 
     println!("{part1}, {part2}");
 }

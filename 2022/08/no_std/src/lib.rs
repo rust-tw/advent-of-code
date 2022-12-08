@@ -2,7 +2,7 @@
 
 use itertools::Itertools;
 
-pub fn scan<const N: usize>(grid: &[[u8; N]]) -> (usize, usize) {
+pub fn scan<const N: usize>(grid: [[u8; N]; N]) -> (usize, usize) {
     (0..grid.len()).cartesian_product(0..grid[0].len()).fold(
         (0, 0),
         |(part1, part2), (row, col)| {
@@ -14,7 +14,7 @@ pub fn scan<const N: usize>(grid: &[[u8; N]]) -> (usize, usize) {
 
 const DIR: [(isize, isize); 4] = [(-1, 0), (0, -1), (1, 0), (0, 1)];
 
-fn solve<const N: usize>(grid: &[[u8; N]], row: usize, col: usize) -> (usize, usize) {
+fn solve<const N: usize>(grid: &[[u8; N]; N], row: usize, col: usize) -> (usize, usize) {
     let tree = grid[row][col];
     let (mut visible, mut score) = (false, 1);
 
