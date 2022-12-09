@@ -4,32 +4,48 @@ trait Position<T>
 where
     T: Position<T>,
 {
-    fn offset(&self, pos: T) -> Self;
+    type Base;
 
-    fn offset_x(&self, x: i32) -> Self;
+    fn x(&self) -> Self::Base;
 
-    fn offset_y(&self, y: i32) -> Self;
+    fn y(&self) -> Self::Base;
+
+    fn offset<P>(&self, pos: P) -> Self where P: Position<P, Base = Self::Base>;
+
+    fn offset_x(&self, x: Self::Base) -> Self;
+
+    fn offset_y(&self, y: Self::Base) -> Self;
 }
 
-trait Knot<P>
+trait Knot<T>
 where
-    P: Position<P>,
+    T: Position<T>,
 {
-    fn move_head(&self, direction: char) -> P;
+    fn move_head(&self, direction: char) -> T;
 
-    fn follow_head(&self, tail: &P) -> P;
+    fn follow_head<P>(&self, tail: &P) -> T where P: Position<P, Base = T::Base>;
 }
 
 impl Position<(i32, i32)> for (i32, i32) {
-    fn offset(&self, pos: (i32, i32)) -> Self {
-        self.offset_x(pos.0).offset_y(pos.1)
+    type Base = i32;
+
+    fn x(&self) -> Self::Base {
+        self.0
     }
 
-    fn offset_x(&self, x: i32) -> Self {
+    fn y(&self) -> Self::Base {
+        self.1
+    }
+
+    fn offset<P>(&self, pos: P) -> Self where P: Position<P, Base = Self::Base> {
+        self.offset_x(pos.x()).offset_y(pos.y())
+    }
+
+    fn offset_x(&self, x: Self::Base) -> Self {
         (self.0 + x, self.1)
     }
 
-    fn offset_y(&self, y: i32) -> Self {
+    fn offset_y(&self, y: Self::Base) -> Self {
         (self.0, self.1 + y)
     }
 }
@@ -45,16 +61,16 @@ impl Knot<(i32, i32)> for (i32, i32) {
         }
     }
 
-    fn follow_head(&self, head: &(i32, i32)) -> (i32, i32) {
+    fn follow_head<P>(&self, head: &P) -> (i32, i32) where P: Position<P, Base = i32> {
         match self {
-            (x, y) if head.0 == *x && (head.1 - y).abs() > 1 => {
-                self.offset_y((head.1 - y).signum())
+            (x, y) if head.x() == *x && (head.y() - y).abs() > 1 => {
+                self.offset_y((head.y() - y).signum())
             }
-            (x, y) if head.1 == *y && (head.0 - x).abs() > 1 => {
-                self.offset_x((head.0 - x).signum())
+            (x, y) if head.y() == *y && (head.x() - x).abs() > 1 => {
+                self.offset_x((head.x() - x).signum())
             }
-            (x, y) if (head.1 - y).abs() + (head.0 - x).abs() >= 3 => {
-                self.offset(((head.0 - x).signum(), (head.1 - y).signum()))
+            (x, y) if (head.y() - y).abs() + (head.x() - x).abs() >= 3 => {
+                self.offset(((head.x() - x).signum(), (head.y() - y).signum()))
             }
             _ => self.clone(),
         }
