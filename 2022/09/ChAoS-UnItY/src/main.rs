@@ -10,7 +10,9 @@ where
 
     fn y(&self) -> Self::Base;
 
-    fn offset<P>(&self, pos: P) -> Self where P: Position<P, Base = Self::Base>;
+    fn offset<P>(&self, pos: P) -> Self
+    where
+        P: Position<P, Base = Self::Base>;
 
     fn offset_x(&self, x: Self::Base) -> Self;
 
@@ -23,7 +25,9 @@ where
 {
     fn move_head(&self, direction: char) -> T;
 
-    fn follow_head<P>(&self, tail: &P) -> T where P: Position<P, Base = T::Base>;
+    fn follow_head<P>(&self, head: &P) -> T
+    where
+        P: Position<P, Base = T::Base>;
 }
 
 impl Position<(i32, i32)> for (i32, i32) {
@@ -37,7 +41,10 @@ impl Position<(i32, i32)> for (i32, i32) {
         self.1
     }
 
-    fn offset<P>(&self, pos: P) -> Self where P: Position<P, Base = Self::Base> {
+    fn offset<P>(&self, pos: P) -> Self
+    where
+        P: Position<P, Base = Self::Base>,
+    {
         self.offset_x(pos.x()).offset_y(pos.y())
     }
 
@@ -61,7 +68,10 @@ impl Knot<(i32, i32)> for (i32, i32) {
         }
     }
 
-    fn follow_head<P>(&self, head: &P) -> (i32, i32) where P: Position<P, Base = i32> {
+    fn follow_head<P>(&self, head: &P) -> (i32, i32)
+    where
+        P: Position<P, Base = i32>,
+    {
         match self {
             (x, y) if head.x() == *x && (head.y() - y).abs() > 1 => {
                 self.offset_y((head.y() - y).signum())
@@ -98,10 +108,10 @@ fn traverse<const SIZE: usize>(data: &Vec<(char, usize)>) -> usize {
     let mut knots = [(0, 0); SIZE];
 
     for (direction, step) in data {
-        for _ in 0 .. *step {
+        for _ in 0..*step {
             knots[0] = knots[0].move_head(*direction);
 
-            for i in 1 .. SIZE {
+            for i in 1..SIZE {
                 knots[i] = knots[i].follow_head(&knots[i - 1]);
             }
 
