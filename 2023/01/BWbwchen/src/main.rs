@@ -1,6 +1,4 @@
-use lazy_static::lazy_static;
-
-pub fn solve1(input: &str) -> u32 {
+fn solve1(input: &str) -> u32 {
     input.lines().fold(0, |acc, x| {
         let mut first_digit = 0;
         let mut second_digit = 0;
@@ -21,10 +19,13 @@ pub fn solve1(input: &str) -> u32 {
     })
 }
 
-lazy_static! {
-    static ref NUM_STR: Vec<&'static str> =
-        vec!["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",];
-}
+use once_cell::sync::Lazy;
+
+static NUM_STR: Lazy<Vec<&'static str>> = Lazy::new(|| {
+    vec![
+        "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+    ]
+});
 
 enum Dir {
     Forward,
@@ -60,7 +61,7 @@ fn try_get_num(input: &str, direction: Dir) -> Option<u32> {
     None
 }
 
-pub fn solve2(input: &str) -> u32 {
+fn solve2(input: &str) -> u32 {
     input.lines().fold(0, |acc, x| {
         let mut first_digit = 0;
         let mut second_digit = 0;
@@ -82,19 +83,8 @@ pub fn solve2(input: &str) -> u32 {
     })
 }
 
-#[cfg(test)]
-mod test {
-    use crate::day01::solve2;
-
-    #[test]
-    fn test_solve2() {
-        let input = "two1nine
-eightwothree
-abcone2threexyz
-xtwone3four
-4nineeightseven2
-zoneight234
-7pqrstsixteen";
-        assert_eq!(solve2(input), 281);
-    }
+fn main() {
+    let my_str = include_str!("day01-input");
+    println!("{}", solve1(my_str));
+    println!("{}", solve2(my_str));
 }
