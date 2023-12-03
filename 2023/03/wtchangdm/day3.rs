@@ -169,7 +169,7 @@ mod tests {
         assert_eq!(dbg!(solve_part1(&input)), 4361);
     }
 
-    // #[test]
+    #[test]
     fn test_part2() {
         let input: Vec<String> = [
             "467..114..",
