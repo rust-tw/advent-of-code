@@ -50,23 +50,14 @@ mod tests {
 
     #[test]
     fn part1_example() {
-        let input = "1abc2
-pqr3stu8vwx
-a1b2c3d4e5f
-treb7uchet";
+        let input = include_str!("../example1");
 
         assert_eq!(day1_part1(input), 142);
     }
 
     #[test]
     fn part2_example() {
-        let input = "two1nine
-eightwothree
-abcone2threexyz
-xtwone3four
-4nineeightseven2
-zoneight234
-7pqrstsixteen";
+        let input = include_str!("../example2");
 
         assert_eq!(day1_part2(input), 281);
     }
