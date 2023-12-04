@@ -58,8 +58,6 @@ fn part2(content: &str) {
                 }
             }
 
-            println!("{}", numerics.iter().fold(0u64, |acc, e| acc * 10 + *e as u64));
-
             let first = numerics.first().unwrap() * 10;
             let last = numerics.last().unwrap();
 
