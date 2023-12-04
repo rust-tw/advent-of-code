@@ -59,7 +59,7 @@ pub fn solve_part2(input: &[String]) -> u32 {
             .get(&card.id)
             .unwrap()
             .iter()
-            .for_each(|won_id| queue.push_back(*won_id));
+            .for_each(|&won_id| queue.push_back(won_id));
     });
 
     while !queue.is_empty() {
