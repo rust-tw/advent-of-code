@@ -1,4 +1,4 @@
 # Solution
 
-This solution is highly FP-styled, while being lack of performance 
-at the same time. :P
+This solution is highly FP-styled and straightforward, while being 
+lack of performance. :P

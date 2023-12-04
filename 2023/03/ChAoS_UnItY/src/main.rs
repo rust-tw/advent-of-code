@@ -65,6 +65,20 @@ fn generate_adjacent_poses(
     poses
 }
 
+fn resolve_number_with_len(col_pos: usize, row_pos: usize, lines: &[&[u8]]) -> (usize, u32) {
+    let line = lines[col_pos];
+    let len = line[row_pos..]
+        .iter()
+        .take_while(|b| b.is_ascii_digit())
+        .count();
+    let number = line[row_pos..row_pos + len]
+        .iter()
+        .map(|&b| (b - b'0') as u32)
+        .fold(0, |acc, e| acc * 10 + e);
+
+    (len, number)
+}
+
 fn part1(lines: &[&[u8]]) {
     let mut result = 0;
     let col_len = lines.len();
@@ -75,24 +89,17 @@ fn part1(lines: &[&[u8]]) {
 
         while row < row_len {
             if lines[col][row].is_ascii_digit() {
-                let part_len = lines[col][row..]
-                    .iter()
-                    .take_while(|b| b.is_ascii_digit())
-                    .count();
-                let part_number = lines[col][row..row + part_len]
-                    .iter()
-                    .map(|&b| (b - b'0') as u32)
-                    .fold(0, |acc, e| acc * 10 + e);
-                let has_symbol = generate_adjacent_poses(col, col_len, row, row_len, part_len)
+                let (len, number) = resolve_number_with_len(col, row, lines);
+                let has_symbol = generate_adjacent_poses(col, col_len, row, row_len, len)
                     .iter()
                     .map(|&(target_col, target_row)| lines[target_col][target_row])
                     .any(|b| !b.is_ascii_digit() && b != b'.');
 
                 if has_symbol {
-                    result += part_number;
+                    result += number;
                 }
 
-                row += part_len
+                row += len
             } else {
                 row += 1;
             }
@@ -114,21 +121,14 @@ fn part2(lines: &[&[u8]]) {
 
         while row < row_len {
             if lines[col][row].is_ascii_digit() {
-                let part_len = lines[col][row..]
-                    .iter()
-                    .take_while(|b| b.is_ascii_digit())
-                    .count();
-                let part_number = lines[col][row..row + part_len]
-                    .iter()
-                    .map(|&b| (b - b'0') as u32)
-                    .fold(0, |acc, e| acc * 10 + e);
+                let (len, number) = resolve_number_with_len(col, row, lines);
                 let span = Span {
                     start: (col, row),
-                    end: (col, row + part_len),
+                    end: (col, row + len),
                 };
 
-                number_spans.push((part_number, span));
-                row += part_len;
+                number_spans.push((number, span));
+                row += len;
             } else {
                 if lines[col][row] == b'*' {
                     asterisk_poses.push((col, row));
@@ -155,7 +155,8 @@ fn part2(lines: &[&[u8]]) {
                 .collect::<Vec<_>>();
 
         if surrounding_numbers.len() == 2 {
-            result += surrounding_numbers.into_iter()
+            result += surrounding_numbers
+                .into_iter()
                 .fold(1u32, u32::wrapping_mul);
         }
     }
