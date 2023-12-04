@@ -25,12 +25,7 @@ impl Card {
     }
 
     fn points(&self) -> u32 {
-        match self
-            .winning
-            .intersection(&self.owned)
-            .count()
-            .checked_sub(1)
-        {
+        match self.won_copies().checked_sub(1) {
             None => 0, // negative, like -1
             Some(v) => 2_u32.pow(v as u32),
         }
