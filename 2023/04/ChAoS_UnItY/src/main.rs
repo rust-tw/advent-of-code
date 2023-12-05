@@ -24,7 +24,7 @@ fn resolve_input(content: &str) -> Vec<(Vec<u32>, Vec<u32>)> {
                 .map(|(winnings, holds)| (resolve_numbers(winnings), resolve_numbers(holds)))
                 .unwrap()
         })
-        .collect::<Vec<_>>()
+        .collect()
 }
 
 fn part1(games: &[(Vec<u32>, Vec<u32>)]) {
