@@ -31,10 +31,7 @@ fn part1(games: &[(Vec<u32>, Vec<u32>)]) {
     let mut result = 0;
 
     for (winnings, holds) in games {
-        let matches = holds
-            .iter()
-            .filter(|&hold| winnings.contains(hold))
-            .count();
+        let matches = holds.iter().filter(|&hold| winnings.contains(hold)).count();
 
         result += if matches == 0 {
             0
@@ -47,21 +44,17 @@ fn part1(games: &[(Vec<u32>, Vec<u32>)]) {
 }
 
 fn part2(games: &[(Vec<u32>, Vec<u32>)]) {
-    let mut result = 0;
     let mut cards = vec![1; games.len()];
 
     for (index, (winnings, holds)) in games.iter().enumerate() {
         let base = cards[index];
-        let matches = holds
-            .iter()
-            .filter(|&hold| winnings.contains(hold))
-            .count();
+        let matches = holds.iter().filter(|&hold| winnings.contains(hold)).count();
         cards[index + 1..games.len().min(index + 1 + matches)]
             .iter_mut()
             .for_each(|target_base| *target_base += base);
     }
 
-    result = cards.iter().sum::<u32>();
+    let result = cards.iter().sum::<u32>();
 
     println!("{result}");
 }
