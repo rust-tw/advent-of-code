@@ -41,9 +41,9 @@ pub fn solve_part1(input: &[String]) -> u64 {
 }
 
 pub fn solve_part2(input: &[String]) -> u64 {
-    let (durations, records) = (parse_one(&input[0]), parse_one(&input[1]));
+    let (duration, record) = (parse_one(&input[0]), parse_one(&input[1]));
 
-    solve(vec![durations], vec![records])
+    solve(vec![duration], vec![record])
 }
 
 #[cfg(test)]
