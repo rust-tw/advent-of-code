@@ -2,15 +2,15 @@
 use rayon::prelude::*;
 
 struct Almanac {
-    seeds: Vec<u32>,
-    resources: Vec<Vec<(u32, u32, u32)>>,
+    seeds: Vec<u64>,
+    resources: Vec<Vec<(u64, u64, u64)>>,
 }
 
 impl Almanac {
     fn from(input: &[String]) -> Almanac {
-        let mut resources: Vec<Vec<(u32, u32, u32)>> = vec![];
+        let mut resources: Vec<Vec<(u64, u64, u64)>> = vec![];
         let mut i = input.iter();
-        let seeds: Vec<u32> = (i.next().unwrap())
+        let seeds: Vec<u64> = (i.next().unwrap())
             .split_once(": ")
             .unwrap()
             .1
@@ -18,7 +18,7 @@ impl Almanac {
             .map(|s| s.parse().unwrap())
             .collect();
 
-        let mut map: Vec<(u32, u32, u32)> = vec![];
+        let mut map: Vec<(u64, u64, u64)> = vec![];
         while let Some(line) = i.next() {
             if line.is_empty() {
                 i.next();
@@ -31,9 +31,9 @@ impl Almanac {
             }
 
             let mut l = line.split_whitespace();
-            let dest: u32 = l.next().unwrap().parse().unwrap();
-            let src: u32 = l.next().unwrap().parse().unwrap();
-            let range: u32 = l.next().unwrap().parse().unwrap();
+            let dest: u64 = l.next().unwrap().parse().unwrap();
+            let src: u64 = l.next().unwrap().parse().unwrap();
+            let range: u64 = l.next().unwrap().parse().unwrap();
 
             map.push((dest, src, range));
         }
@@ -46,20 +46,27 @@ impl Almanac {
         Almanac { seeds, resources }
     }
 
-    fn seeds(&self) -> &Vec<u32> {
+    fn seeds(&self) -> &Vec<u64> {
         &self.seeds
     }
 
-    fn find_lowest_location(&self) -> u32 {
+    fn find_lowest_location(&self) -> u64 {
         self.find_lowest_location_with(self.seeds())
     }
 
-    fn find_lowest_location_with(&self, seeds: &[u32]) -> u32 {
+    fn find_lowest_location_with(&self, seeds: &[u64]) -> u64 {
         seeds
             .par_iter()
             .map(|seed_id| {
                 let mut id = *seed_id;
                 for (i, _) in self.resources.iter().enumerate() {
+                    let (_, src_start, _) = &self.resources[i].first().unwrap();
+                    let (_, src_end, src_range) = &self.resources[i].last().unwrap();
+
+                    if id < *src_start || id >= src_end + src_range {
+                        continue;
+                    }
+
                     for (dest, src, range) in &self.resources[i] {
                         if id >= *src && id < src + range {
                             id = id - src + dest;
@@ -75,17 +82,17 @@ impl Almanac {
     }
 }
 
-pub fn solve_part1(input: &[String]) -> u32 {
+pub fn solve_part1(input: &[String]) -> u64 {
     let alamanac = Almanac::from(input);
 
     alamanac.find_lowest_location()
 }
 
-pub fn solve_part2(input: &[String]) -> u32 {
+pub fn solve_part2(input: &[String]) -> u64 {
     let alamanac = Almanac::from(input);
     let seeds = alamanac.seeds();
-    let expanded_seeds: Vec<u32> = seeds
-        .iter()
+    let expanded_seeds: Vec<u64> = seeds
+        .par_iter()
         .enumerate()
         .step_by(2)
         .flat_map(|(i, _)| seeds[i]..seeds[i] + seeds[i + 1])
