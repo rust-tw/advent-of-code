@@ -1,10 +1,9 @@
-use std::collections::{HashMap, HashSet, VecDeque};
+use std::collections::{HashMap, HashSet};
 
 #[derive(Debug)]
 struct Card {
     id: u32,
-    winning: HashSet<u32>,
-    owned: HashSet<u32>,
+    won_copies: u32,
 }
 
 fn parse_numbers(s: &str) -> HashSet<u32> {
@@ -15,24 +14,26 @@ fn parse_numbers(s: &str) -> HashSet<u32> {
 
 impl Card {
     fn from(line: &str) -> Self {
-        let split: Vec<&str> = line.split(": ").collect();
-        let id: u32 = split[0].replace("Card ", "").trim().parse().unwrap();
-        let numbers: Vec<&str> = split[1].split(" | ").collect();
-        let winning: HashSet<u32> = parse_numbers(numbers[0]);
-        let owned: HashSet<u32> = parse_numbers(numbers[1]);
+        let (meta, numbers) = line.split_once(": ").unwrap();
+        let id: u32 = meta.replace("Card ", "").trim().parse().unwrap();
+        let (winning, owned) = numbers
+            .split_once(" | ")
+            .map(|(a, b)| (parse_numbers(a), parse_numbers(b)))
+            .unwrap();
+        let won_copies = winning.intersection(&owned).count() as u32;
 
-        Self { id, winning, owned }
+        Self { id, won_copies }
     }
 
     fn points(&self) -> u32 {
         match self.won_copies().checked_sub(1) {
             None => 0, // negative, like -1
-            Some(v) => 2_u32.pow(v as u32),
+            Some(v) => 2_u32.pow(v),
         }
     }
 
-    fn won_copies(&self) -> usize {
-        self.winning.intersection(&self.owned).count()
+    fn won_copies(&self) -> u32 {
+        self.won_copies
     }
 }
 
@@ -46,26 +47,15 @@ pub fn solve_part1(input: &[String]) -> u32 {
 
 pub fn solve_part2(input: &[String]) -> u32 {
     let mut count: HashMap<u32, u32> = HashMap::new();
-    let mut copies: HashMap<u32, usize> = HashMap::new();
-    let mut queue: VecDeque<u32> = VecDeque::new();
 
     input.iter().map(|line| Card::from(line)).for_each(|card| {
-        count.entry(card.id).or_insert(1);
-        copies.entry(card.id).or_insert(card.won_copies());
+        *count.entry(card.id).or_insert(0) += 1;
 
-        (1..=card.won_copies())
-            .map(|i| i as u32 + card.id)
-            .for_each(|id| queue.push_back(id));
+        // inspired by https://github.com/rust-tw/advent-of-code/tree/main/2023/04
+        (1..=card.won_copies()).map(|i| i + card.id).for_each(|id| {
+            *count.entry(id).or_insert(0) += *count.get(&card.id).unwrap();
+        })
     });
-
-    while !queue.is_empty() {
-        let card_id = queue.pop_front().unwrap();
-        *count.get_mut(&card_id).unwrap() += 1;
-
-        (1..=*copies.get(&card_id).unwrap())
-            .map(|i| i as u32 + card_id)
-            .for_each(|id| queue.push_back(id));
-    }
 
     count.values().sum()
 }

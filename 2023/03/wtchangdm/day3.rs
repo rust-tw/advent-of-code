@@ -166,7 +166,7 @@ mod tests {
         .map(|x| x.to_string())
         .collect();
 
-        assert_eq!(dbg!(solve_part1(&input)), 4361);
+        assert_eq!(solve_part1(&input), 4361);
     }
 
     #[test]
@@ -187,6 +187,6 @@ mod tests {
         .map(|x| x.to_string())
         .collect();
 
-        assert_eq!(dbg!(solve_part2(&input)), 467835);
+        assert_eq!(solve_part2(&input), 467835);
     }
 }
