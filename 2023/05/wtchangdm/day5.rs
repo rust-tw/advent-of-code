@@ -39,6 +39,7 @@ impl Almanac {
         }
 
         if !map.is_empty() {
+            map.sort_by(|(_, s, _), (_, s2, _)| s.partial_cmp(s2).unwrap());
             resources.push(map);
         }
 
