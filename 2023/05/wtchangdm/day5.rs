@@ -60,13 +60,6 @@ impl Almanac {
             .map(|seed_id| {
                 let mut id = *seed_id;
                 for (i, _) in self.resources.iter().enumerate() {
-                    let (_, src_start, _) = &self.resources[i].first().unwrap();
-                    let (_, src_end, src_range) = &self.resources[i].last().unwrap();
-
-                    if id < *src_start || id >= src_end + src_range {
-                        continue;
-                    }
-
                     for (dest, src, range) in &self.resources[i] {
                         if id >= *src && id < src + range {
                             id = id - src + dest;
