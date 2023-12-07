@@ -46,18 +46,21 @@ pub fn solve_part1(input: &[String]) -> u32 {
 }
 
 pub fn solve_part2(input: &[String]) -> u32 {
-    let mut count: HashMap<u32, u32> = HashMap::new();
+    input
+        .iter()
+        .map(|line| Card::from(line))
+        .fold(HashMap::new(), |mut count, card| {
+            *count.entry(card.id).or_insert(0) += 1;
 
-    input.iter().map(|line| Card::from(line)).for_each(|card| {
-        *count.entry(card.id).or_insert(0) += 1;
+            // inspired by https://github.com/rust-tw/advent-of-code/tree/main/2023/04
+            (1..=card.won_copies())
+                .map(|i| i + card.id)
+                .for_each(|id| *count.entry(id).or_insert(0) += *count.get(&card.id).unwrap());
 
-        // inspired by https://github.com/rust-tw/advent-of-code/tree/main/2023/04
-        (1..=card.won_copies()).map(|i| i + card.id).for_each(|id| {
-            *count.entry(id).or_insert(0) += *count.get(&card.id).unwrap();
+            count
         })
-    });
-
-    count.values().sum()
+        .values()
+        .sum()
 }
 
 #[cfg(test)]
