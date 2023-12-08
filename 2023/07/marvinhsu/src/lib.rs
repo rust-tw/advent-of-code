@@ -154,23 +154,23 @@ impl CardType {
 
     /// needed debug
     fn from_labels_part2(labels: [Label; 5]) -> Self {
-        let (map, jockers) =
+        let (map, jokers) =
             labels
                 .iter()
-                .fold((HashMap::new(), vec![]), |(mut map, mut jockers), label| {
+                .fold((HashMap::new(), vec![]), |(mut map, mut jokers), label| {
                     if *label == Label::Joker {
-                        jockers.push(label);
+                        jokers.push(label);
                     } else {
                         *map.entry(label).or_insert(0) += 1;
                     }
 
-                    (map, jockers)
+                    (map, jokers)
                 });
 
         let set = map.iter().map(|(_, v)| v).sorted().collect_vec();
-        let jocker_count = jockers.len();
+        let joker_count = jokers.len();
 
-        match (set.as_slice(), jocker_count) {
+        match (set.as_slice(), joker_count) {
             (l, 0) => match l {
                 [5] => CardType::FiveKind(labels),
                 [1, 4] => CardType::FourKind(labels),
