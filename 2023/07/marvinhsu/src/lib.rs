@@ -65,7 +65,7 @@ pub fn part2(input: &str) -> Result<usize> {
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone, Copy, Hash)]
 enum Label {
-    Jocker,
+    Joker,
     Two,
     Three,
     Four,
@@ -112,7 +112,7 @@ impl Label {
             '8' => Ok(Label::Eight),
             '9' => Ok(Label::Nine),
             'T' => Ok(Label::Ten),
-            'J' => Ok(Label::Jocker),
+            'J' => Ok(Label::Joker),
             'Q' => Ok(Label::Queen),
             'K' => Ok(Label::King),
             'A' => Ok(Label::Ace),
@@ -158,7 +158,7 @@ impl CardType {
             labels
                 .iter()
                 .fold((HashMap::new(), vec![]), |(mut map, mut jockers), label| {
-                    if *label == Label::Jocker {
+                    if *label == Label::Joker {
                         jockers.push(label);
                     } else {
                         *map.entry(label).or_insert(0) += 1;
@@ -269,7 +269,7 @@ mod tests {
 
         assert_eq!(Label::from_char_part2(&'2').unwrap(), Two);
         assert_eq!(Label::from_char_part2(&'3').unwrap(), Three);
-        assert_eq!(Label::from_char_part2(&'J').unwrap(), Jocker);
+        assert_eq!(Label::from_char_part2(&'J').unwrap(), Joker);
     }
 
     #[test]
@@ -286,8 +286,8 @@ mod tests {
         );
 
         assert_eq!(
-            CardType::from_labels_part2([Ten, Five, Five, Jocker, Five]),
-            FourKind([Ten, Five, Five, Jocker, Five])
+            CardType::from_labels_part2([Ten, Five, Five, Joker, Five]),
+            FourKind([Ten, Five, Five, Joker, Five])
         );
 
         assert_eq!(
@@ -296,13 +296,13 @@ mod tests {
         );
 
         assert_eq!(
-            CardType::from_labels_part2([King, Ten, Jocker, Jocker, Ten]),
-            FourKind([King, Ten, Jocker, Jocker, Ten])
+            CardType::from_labels_part2([King, Ten, Joker, Joker, Ten]),
+            FourKind([King, Ten, Joker, Joker, Ten])
         );
 
         assert_eq!(
-            CardType::from_labels_part2([Queen, Queen, Queen, Jocker, Ace]),
-            FourKind([Queen, Queen, Queen, Jocker, Ace])
+            CardType::from_labels_part2([Queen, Queen, Queen, Joker, Ace]),
+            FourKind([Queen, Queen, Queen, Joker, Ace])
         );
     }
 
