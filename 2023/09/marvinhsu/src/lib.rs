@@ -57,8 +57,6 @@ fn get_previous_number(layer: &[isize]) -> isize {
 
 #[cfg(test)]
 mod tests {
-    use std::vec;
-
     use super::*;
 
     #[test]
@@ -73,22 +71,22 @@ mod tests {
             get_sub_layer(&vec![1, 3, 6, 10, 15, 21]).unwrap(),
             [2, 3, 4, 5, 6]
         );
-        assert_eq!(get_sub_layer(&vec![2, 3, 4, 5, 6]).unwrap(), [1, 1, 1, 1]);
-        assert_eq!(get_sub_layer(&vec![1, 1, 1, 1]).unwrap(), [0, 0, 0,]);
-        assert_eq!(get_sub_layer(&vec![0, 0, 0,]), None);
+        assert_eq!(get_sub_layer(&[2, 3, 4, 5, 6]).unwrap(), [1, 1, 1, 1]);
+        assert_eq!(get_sub_layer(&[1, 1, 1, 1]).unwrap(), [0, 0, 0,]);
+        assert_eq!(get_sub_layer(&[0, 0, 0,]), None);
     }
 
     #[test]
     fn test_get_next_number() {
-        assert_eq!(get_next_number(&vec![0, 3, 6, 9, 12, 15]), 18);
-        assert_eq!(get_next_number(&vec![1, 3, 6, 10, 15, 21]), 28);
-        assert_eq!(get_next_number(&vec![10, 13, 16, 21, 30, 45]), 68);
+        assert_eq!(get_next_number(&[0, 3, 6, 9, 12, 15]), 18);
+        assert_eq!(get_next_number(&[1, 3, 6, 10, 15, 21]), 28);
+        assert_eq!(get_next_number(&[10, 13, 16, 21, 30, 45]), 68);
     }
 
     #[test]
     fn test_get_previous_number() {
-        assert_eq!(get_previous_number(&vec![0, 3, 6, 9, 12, 15]), -3);
-        assert_eq!(get_previous_number(&vec![1, 3, 6, 10, 15, 21]), 0);
-        assert_eq!(get_previous_number(&vec![10, 13, 16, 21, 30, 45]), 5);
+        assert_eq!(get_previous_number(&[0, 3, 6, 9, 12, 15]), -3);
+        assert_eq!(get_previous_number(&[1, 3, 6, 10, 15, 21]), 0);
+        assert_eq!(get_previous_number(&[10, 13, 16, 21, 30, 45]), 5);
     }
 }
