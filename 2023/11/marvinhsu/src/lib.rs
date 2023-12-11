@@ -57,7 +57,7 @@ impl Image {
             .collect::<HashSet<usize>>();
 
         let mut current_y = 0;
-        for row in image.iter() {
+        for row in image_iter {
             let mut current_x = 0;
             for (x, c) in row.iter().enumerate() {
                 if c == &'#' {
