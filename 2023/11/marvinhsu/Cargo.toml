@@ -1,0 +1,22 @@
+[package]
+name = "day11"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "day11"
+path = "src/lib.rs"
+test = true
+crate-type = ["lib"]
+doctest = false
+
+[[bin]]
+name = "day11"
+path = "src/main.rs"
+test = false
+doctest = false
+
+[dependencies]
+tap = "1.0.1"
+anyhow = "1.0.75"
+itertools = "0.12.0"
