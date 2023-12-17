@@ -134,21 +134,20 @@ impl PartialEq for Hand {
 
 impl Ord for Hand {
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        match self {
-            _ if self.hand_type.rank() > other.hand_type.rank() => Ordering::Greater,
-            _ if self.hand_type.rank() < other.hand_type.rank() => Ordering::Less,
-            _ => {
-                for (i, _) in self.labels.iter().enumerate() {
-                    match i {
-                        _ if self.labels[i] > other.labels[i] => return Ordering::Greater,
-                        _ if self.labels[i] < other.labels[i] => return Ordering::Less,
-                        _ => continue,
-                    }
-                }
+        let result = self.hand_type.rank().cmp(&other.hand_type.rank());
 
-                Ordering::Equal
+        if result != Ordering::Equal {
+            return result;
+        }
+
+        for (self_label, other_label) in self.labels.iter().zip(other.labels.iter()) {
+            let label_cmp = self_label.cmp(other_label);
+            if label_cmp != Ordering::Equal {
+                return label_cmp;
             }
         }
+
+        Ordering::Equal
     }
 }
 
