@@ -87,7 +87,6 @@ struct Hand {
     hand_type: HandType,
     labels: Vec<u8>,
     bid: u32,
-    use_joker: bool,
 }
 
 impl Hand {
@@ -122,7 +121,6 @@ impl Hand {
             labels,
             hand_type,
             bid,
-            use_joker,
         }
     }
 }
