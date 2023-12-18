@@ -1,3 +1,5 @@
+// revised per https://github.com/rust-tw/advent-of-code/pull/86
+
 use std::{cmp::Ordering, collections::HashMap};
 
 type Label = u8;
@@ -39,7 +41,7 @@ impl HandType {
         };
     }
 
-    fn from(labels: &Vec<Label>) -> Self {
+    fn from(labels: &[Label]) -> Self {
         let mut map = HashMap::new();
         for label in labels {
             *map.entry(label).or_insert(0) += 1;
@@ -94,8 +96,13 @@ impl Hand {
             'A' => 14,
             'K' => 13,
             'Q' => 12,
-            _ if *ch == 'J' && !use_joker => 11,
-            _ if *ch == 'J' && use_joker => 1,
+            'J' => {
+                if use_joker {
+                    1
+                } else {
+                    11
+                }
+            }
             'T' => 10,
             '2'..='9' => *ch as u8 - b'0',
             _ => panic!("how is this possible? 😑"),
@@ -134,20 +141,7 @@ impl PartialEq for Hand {
 
 impl Ord for Hand {
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        let result = self.hand_type.rank().cmp(&other.hand_type.rank());
-
-        if result != Ordering::Equal {
-            return result;
-        }
-
-        for (self_label, other_label) in self.labels.iter().zip(other.labels.iter()) {
-            let label_cmp = self_label.cmp(other_label);
-            if label_cmp != Ordering::Equal {
-                return label_cmp;
-            }
-        }
-
-        Ordering::Equal
+        (self.hand_type.rank(), &self.labels).cmp(&(other.hand_type.rank(), &other.labels))
     }
 }
 
