@@ -1,3 +1,4 @@
+// revised per https://github.com/rust-tw/advent-of-code/pull/88
 use std::collections::HashMap;
 
 #[derive(Debug, Clone, Copy)]
@@ -6,8 +7,8 @@ enum Direction {
     Right,
 }
 
-impl Direction {
-    fn from(ch: &char) -> Self {
+impl From<char> for Direction {
+    fn from(ch: char) -> Self {
         match ch {
             'L' => Self::Left,
             'R' => Self::Right,
@@ -23,15 +24,10 @@ struct Map {
 }
 
 impl Map {
-    fn from(input: &[String]) -> Self {
-        let mut nodes: HashMap<String, [String; 2]> = HashMap::new();
-        let mut iter = input.iter().peekable();
-        let directions: Vec<Direction> = iter
-            .next()
-            .unwrap()
-            .chars()
-            .map(|ch| Direction::from(&ch))
-            .collect();
+    fn new(input: &[&str]) -> Self {
+        let mut nodes = HashMap::new();
+        let mut iter = input.iter();
+        let directions: Vec<Direction> = iter.next().unwrap().chars().map(Into::into).collect();
 
         iter.next();
 
@@ -52,10 +48,6 @@ impl Map {
         }
     }
 
-    fn nodes(&self) -> &HashMap<String, [String; 2]> {
-        &self.nodes
-    }
-
     fn cursor(&self) -> usize {
         self.cursor
     }
@@ -71,43 +63,43 @@ impl Map {
     }
 }
 
-pub fn solve_part1(input: &[String]) -> u64 {
-    let mut map = Map::from(input);
+pub fn solve_part1(input: &[&str]) -> u64 {
+    let mut map = Map::new(input);
     let mut current = "AAA".to_string();
 
     while current != "ZZZ" {
         current = match map.next_direction() {
-            Direction::Left => map.nodes().get(&current).unwrap()[0].clone(),
-            Direction::Right => map.nodes().get(&current).unwrap()[1].clone(),
+            Direction::Left => map.nodes.get(&current).unwrap()[0].clone(),
+            Direction::Right => map.nodes.get(&current).unwrap()[1].clone(),
         };
     }
 
     map.cursor() as u64
 }
 
-pub fn solve_part2(input: &[String]) -> u64 {
-    let mut map = Map::from(input);
+pub fn solve_part2(input: &[&str]) -> u64 {
+    let mut map = Map::new(input);
     let mut starting_nodes: Vec<String> = map
-        .nodes()
+        .nodes
         .keys()
         .filter(|node| node.ends_with('A'))
         .cloned()
         .collect();
 
-    let mut steps: Vec<u64> = vec![0; starting_nodes.len()];
+    let mut steps = vec![0; starting_nodes.len()];
 
     for (i, node) in starting_nodes.iter_mut().enumerate() {
         while !node.ends_with('Z') {
             *node = match map.next_direction() {
-                Direction::Left => map.nodes().get(node).unwrap()[0].clone(),
-                Direction::Right => map.nodes().get(node).unwrap()[1].clone(),
+                Direction::Left => map.nodes.get(node).unwrap()[0].clone(),
+                Direction::Right => map.nodes.get(node).unwrap()[1].clone(),
             };
         }
         steps[i] = map.cursor() as u64;
         map.reset_cursor();
     }
 
-    lcm_of_vec(&steps)
+    steps.iter().fold(1, lcm)
 }
 
 // Huge thanks to ChatGPT for the following helper functions
@@ -119,12 +111,8 @@ fn gcd(a: u64, b: u64) -> u64 {
     }
 }
 
-fn lcm(a: u64, b: u64) -> u64 {
-    a / gcd(a, b) * b
-}
-
-fn lcm_of_vec(numbers: &[u64]) -> u64 {
-    numbers.iter().fold(1, |l, &n| lcm(l, n))
+fn lcm(a: u64, b: &u64) -> u64 {
+    a / gcd(a, *b) * b
 }
 
 #[cfg(test)]
@@ -133,7 +121,7 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        let input: Vec<String> = [
+        let input = [
             "RL",
             "",
             "AAA = (BBB, CCC)",
@@ -143,33 +131,27 @@ mod tests {
             "EEE = (EEE, EEE)",
             "GGG = (GGG, GGG)",
             "ZZZ = (ZZZ, ZZZ)",
-        ]
-        .iter()
-        .map(|x| x.to_string())
-        .collect();
+        ];
 
         assert_eq!(solve_part1(&input), 2);
     }
 
     #[test]
     fn test_part1_with_repeat_directions() {
-        let input: Vec<String> = [
+        let input = [
             "LLR",
             "",
             "AAA = (BBB, BBB)",
             "BBB = (AAA, ZZZ)",
             "ZZZ = (ZZZ, ZZZ)",
-        ]
-        .iter()
-        .map(|x| x.to_string())
-        .collect();
+        ];
 
         assert_eq!(solve_part1(&input), 6);
     }
 
     #[test]
     fn test_part2() {
-        let input: Vec<String> = [
+        let input = [
             "LR",
             "",
             "11A = (11B, XXX)",
@@ -180,10 +162,7 @@ mod tests {
             "22C = (22Z, 22Z)",
             "22Z = (22B, 22B)",
             "XXX = (XXX, XXX)",
-        ]
-        .iter()
-        .map(|x| x.to_string())
-        .collect();
+        ];
 
         assert_eq!(solve_part2(&input), 6);
     }
