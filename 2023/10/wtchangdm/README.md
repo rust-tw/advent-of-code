@@ -4,4 +4,4 @@ Copied from: [https://github.com/wtchangdm/advent-of-code-2023](https://github.c
 
 ## Day 1
 
-Use DFS (can be BFS as well) to calculate the path. The farthest point from start is the total steps devided by 2.
+Use DFS (can be BFS as well) to calculate the path. The farthest point from start is the total steps divided by 2.
