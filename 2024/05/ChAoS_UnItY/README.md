@@ -1,5 +1,4 @@
-# Day 3 Solution
+# Day 5 Solution
 
-To save some time on attempting parsing a corrupted string, I use `nom` to 
-help me parsing the string. The `Iterator` approach may be too painful to
-achieve.
+The part 2 solution comes with a greedy solution that aggressively 
+swaps numbers to correct sequence until no swapping happens.
