@@ -16,6 +16,8 @@ fn main() {
         right_list.push(right);
     }
 
+    /* part 1 */
+
     // sort
     left_list.sort();
     right_list.sort();
@@ -27,5 +29,13 @@ fn main() {
         .map(|(l, r)| l.abs_diff(*r))
         .sum();
 
-    print!("part1: {}", result);
+    println!("part1: {}", result);
+
+    /* part 2 */
+
+    let result: u32 = left_list.iter().map(|x| {
+        x * right_list.iter().filter(|y| (*y).eq(x)).count() as u32
+    }).sum();
+
+    println!("part2: {}", result);
 }
